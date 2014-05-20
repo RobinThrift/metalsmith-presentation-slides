@@ -13,6 +13,6 @@ num: 260
 
 <div class="author-info">
     <h5>Source Code</h5>
-    <a href="http://twitter.com/RobinThrift">Slides</a>
-    <a href="http://robinthrift.com">RobinThrift.com</a>
+    <a href="https://github.com/RobinThrift/metalsmith-presentation-slides">Slides</a>
+    <a href="https://github.com/RobinThrift/metalsmith-presentation-code">Site built in this tutorial</a>
 </div>
