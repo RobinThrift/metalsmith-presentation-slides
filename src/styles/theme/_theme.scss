@@ -1,0 +1,89 @@
+@import 'template/_mixins';
+@import 'template/_settings';
+
+$mainColor: #0e0e0e;
+$headingColor: $mainColor;
+
+$headingTextShadow: none;
+$heading1TextShadow: none;
+
+$headingFont: 'Sanchez', serif;
+
+$linkColor: #d85312;
+$linkColorHover: #e65200;
+
+@import 'template/_theme';
+
+
+
+::-moz-selection {
+    background: $accent;
+    color: #fbfbfb;
+    text-shadow: none;
+}
+
+::selection {
+    background: $accent;
+    color: #fbfbfb;
+}
+
+
+
+body {
+    background: url("../../img/bg.png") repeat;
+    font-family: 'Open Sans',sans-serif;
+    font-weight: 300;
+}
+
+.reveal {
+    font-family: 'Open Sans',sans-serif;
+    font-weight: 300;   
+}
+
+.reveal h1 {
+    word-wrap: normal; 
+}
+
+
+// CUSTOM STYlES
+
+.reveal code {
+    background: #f5f2f0;
+    padding: 0px 3px 2px 3px;
+}
+
+.reveal pre {
+    padding: 8px 16px;
+    background: #fbfbfb;
+}
+
+.reveal pre code {
+    background: none;
+    padding: 0;   
+}
+
+.reveal .author-info {
+    position: relative;
+    bottom: -150px;
+    left: 10px;
+    text-align: left;
+    font-size: 0.6em;
+    line-height: 1.2em;
+
+    a {
+        display: block;
+        font-size: inherit;
+    }
+
+    h5 {
+        margin: 0;
+        font-size: inherit;
+    }
+}
+
+.tiny-code pre {
+    font-size: 14px;
+    overflow: scroll;
+    height: 600px;
+}
+
