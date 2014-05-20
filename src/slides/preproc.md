@@ -19,5 +19,5 @@ $ npm install -D metalsmith-sass metalsmith-coffee
 ```
 
 [fragment]
-All other static files (images, fonts, etc.) are jsut copied over (including folder structure)
+All other static files (images, fonts, etc.) are just copied over (including folder structure)
 [/fragment]
