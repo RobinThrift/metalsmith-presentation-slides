@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Metalsmith - Slides</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,300italic,700|Sanchez" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    
+    <div class="reveal">
+        <div class="slides">
+            
+                <section class="slide ">
+                    <h1 id="metalsmith">Metalsmith</h1>
+<h4 id="a-pluggable-javascript-static-site-generator">A pluggable JavaScript static site generator</h4>
+<div class="author-info">
+    <h5>Robin Thrift</h5>
+    <a href="http://twitter.com/RobinThrift">@RobinThrift</a>
+    <a href="http://robinthrift.com">RobinThrift.com</a>
+</div>
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="what-is-metalsmith">What is Metalsmith</h3>
+<div class="fragment"><code>Jekyll + Gulp.js = Metalsmith</code></div>
+<div class="fragment"><pre><code class="lang-js">    Metalsmith(__dirname)
+        .use(markdown())
+        .use(sass())
+        // <span class="hljs-keyword">...</span>
+        .destination(<span class="hljs-string">'./build'</span>)
+        .build();
+</code></pre></div>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="why-is-this-great-">Why is this great?</h3>
+<ul>
+<li>super easy to use (API or JSON)</li>
+<li>easy to write plugins for</li>
+<li>verbose API</li>
+<li>use whatever template engine you like (e. g. Handlebars, Jade)</li>
+<li><div class="fragment">written in your favourite programming language ;)</div></li>
+</ul>
+
+                </section>
+            
+                <section class="slide ">
+                    <h4 id="great-what-do-i-have-to-do-">Great, what do I have to do?</h4>
+<div class="fragment"><pre><code><span class="hljs-variable">$ </span>npm install -<span class="hljs-constant">D</span> metalsmith
+</code></pre></div>
+<div class="fragment"><pre><code class="lang-plain">.
+<span class="hljs-string">|– src/</span>
+    <span class="hljs-string">|– content/</span>
+    <span class="hljs-string">|– styles/</span>
+    <span class="hljs-string">|_ scripts/</span>
+<span class="hljs-string">|– templates/</span>
+<span class="hljs-string">|_ build.js</span>
+</code></pre></div>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="show-me-code-">Show me code!</h3>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> Metalsmith = <span class="hljs-built_in">require</span>(<span class="hljs-string">'metalsmith'</span>);
+
+Metalsmith(__dirname)
+    .destination(<span class="hljs-string">'./build'</span>)
+    .build();
+</code></pre>
+<p>This will move everything from <code>__dirname/src</code> to <code>__dirname/build</code></p>
+<div class="fragment">Simple enough. <br /> <small>(but kind of useless)</small></div>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="make-it-useful-">Make it useful!</h3>
+<p><code>src/index.md</code></p>
+<pre><code class="lang-markdown"><span class="hljs-bullet">---
+</span><span class="hljs-header">title: Home
+---</span>
+##My Page
+
+This is some content!
+</code></pre>
+<div class="fragment"><pre><code>$ npm install <span class="hljs-attribute">-D</span> metalsmith<span class="hljs-attribute">-markdown</span>
+</code></pre><pre><code class="lang-js"><span class="hljs-keyword">var</span> Metalsmith = <span class="hljs-keyword">require</span>(<span class="hljs-string">'metalsmith'</span>),
+    markdown   = <span class="hljs-keyword">require</span>(<span class="hljs-string">'metalsmith-markdown'</span>);
+
+Metalsmith(__dirname)
+    .<span class="hljs-keyword">use</span>(markdown())
+    .destination(<span class="hljs-string">'./build'</span>)
+    .build();
+</code></pre>
+<pre><code><span class="hljs-variable">$ </span>node build.js
+</code></pre></div>
+<div class="fragment"><code>build/index.html</code></div>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="make-it-beautiful-">Make It Beautiful!</h3>
+<div class="fragment"><code>templates/index.hbt</code> </p>
+<pre><code class="lang-html"><span class="xml"><span class="hljs-doctype">&lt;!doctype html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">lang</span>=<span class="hljs-value">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"UTF-8"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span></span><span class="hljs-expression">{{ <span class="hljs-variable">title</span> }}</span><span class="xml"> | Metalsmith Page<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"stylesheet"</span> 
+        <span class="hljs-attribute">href</span>=<span class="hljs-value">"//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"main-wrapper"</span>&gt;</span>
+        </span><span class="hljs-expression">{{{ <span class="hljs-variable">contents</span> }}</span><span class="xml">}
+    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></span>
+</code></pre></div>
+<div class="fragment"><pre><code class="lang-markdown"><span class="hljs-bullet">---
+</span>title: Home
+<span class="hljs-header">template: index.hbt
+---</span>
+</code></pre></div>
+
+                </section>
+            
+                <section class="slide ">
+                    <pre><code>$ npm install <span class="hljs-attribute">-D</span> metalsmith<span class="hljs-attribute">-templates</span> handlebars
+</code></pre><p><small>(uses <a href="https://github.com/visionmedia/consolidate.js">consolidate.js</a>)</small></p>
+<p><code>build.js</code></p>
+<pre><code class="lang-js">// <span class="hljs-keyword">...</span>
+    templates = <span class="hljs-keyword">require</span>(<span class="hljs-string">'metalsmith-templates'</span>);
+
+Metalsmith(__dirname)
+    .use(markdown())
+    .use(templates(<span class="hljs-string">'handlebars'</span>))
+// <span class="hljs-keyword">...</span>
+</code></pre>
+
+                </section>
+            
+                <section class="slide ">
+                    <h2 id="content-types">Content types</h2>
+<pre><code>.
+<span class="hljs-string">|_ src/</span>
+    <span class="hljs-string">|_ contents/</span>
+        <span class="hljs-string">|– posts/</span>
+            <span class="hljs-string">|_ my-frist-post.md</span>
+        <span class="hljs-string">|_ pages/</span>
+            <span class="hljs-string">|_ about.md</span>
+</code></pre>
+                </section>
+            
+                <section class="slide ">
+                    <p><code>src/contents/posts/my-frist-post.md</code></p>
+<pre><code class="lang-markdown"><span class="hljs-bullet">---
+</span>title: My First Post
+template: post.hbt
+<span class="hljs-header">date: 2014-05-19
+---</span>
+#My First Post
+
+Hey, I'm blogging!
+</code></pre>
+<p><code>src/contents/pages/about.md</code></p>
+<pre><code class="lang-markdown"><span class="hljs-bullet">---
+</span>title: About
+<span class="hljs-header">template: page.hbt
+---</span>
+##About
+
+Awesome, witty content here!
+</code></pre>
+<div class="fragment"><code>build/contents/pages/about.html</code>
+<code>build/contents/posts/my-first-post.html</code></div>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="collections">Collections</h3>
+<pre><code>$ npm install <span class="hljs-attribute">-D</span> metalsmith<span class="hljs-attribute">-collections</span>
+</code></pre><div class="fragment"><code>build.js</code></p>
+<pre><code class="lang-js">    // <span class="hljs-keyword">...</span>
+    .use(collections({
+        blog: {
+            pattern: <span class="hljs-string">'*/posts/*'</span>,
+            oderBy: <span class="hljs-string">'date'</span>,
+            revers: true
+        },
+        pages: {
+            pattern: <span class="hljs-string">'*/pages/*'</span>
+        }
+    }))
+    // <span class="hljs-keyword">...</span>
+</code></pre></div>
+
+                </section>
+            
+                <section class="slide ">
+                    <p><code>templates/home.hbt</code></p>
+<pre><code class="lang-handlebars"><span class="xml"><span class="hljs-comment">&lt;!-- ... --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"main-wrapper"</span>&gt;</span>
+    </span><span class="hljs-expression">{{<span class="hljs-begin-block">#<span class="hljs-keyword">each</span> collections.blog</span>}}</span><span class="xml">
+        <span class="hljs-tag">&lt;<span class="hljs-title">article</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"post"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">h3</span>&gt;</span></span><span class="hljs-expression">{{<span class="hljs-variable">title</span>}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-title">h3</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span></span><span class="hljs-expression">{{{<span class="hljs-variable">contents</span>}}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">article</span>&gt;</span>
+    </span><span class="hljs-expression">{{<span class="hljs-end-block">/<span class="hljs-keyword">each</span></span>}}</span><span class="xml">
+<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-comment">&lt;!-- ... --&gt;</span></span>
+</code></pre>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="permalinks">Permalinks</h3>
+<pre><code>$ npm install <span class="hljs-attribute">-D</span> metalsmith<span class="hljs-attribute">-permalinks</span>
+</code></pre><div class="fragment"><code>build.js</code></p>
+<pre><code class="lang-js">    // <span class="hljs-keyword">...</span>
+    .use(permalinks({
+        pattern: <span class="hljs-string">':collection/:title'</span>,
+        relative: true
+    }))
+    // <span class="hljs-keyword">...</span>
+</code></pre></div>
+<div class="fragment"><code>build/pages/about/index.html</code> <br />
+<code>build/blog/my-first-post/index.html</code></div>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="but-robin-feature-x-is-missing-111-">But Robin, feature [X] is missing!!!111!!</h3>
+<div class="fragment">Yes it is, but I don’t care!</div>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="writing-plugins">Writing Plugins</h3>
+<div class="fragment"><h4 id="internal-structure">Internal Structure</h4>
+<pre><code class="lang-js">{
+    <span class="hljs-string">'title'</span>: <span class="hljs-string">'FROM_THE_TITLE_KEY'</span>,
+    <span class="hljs-string">'template'</span>: <span class="hljs-string">'TEMPLATE_NAME'</span>,
+    <span class="hljs-string">'contents'</span>: &lt;Buffer()&gt;,
+    <span class="hljs-string">'mode'</span>: <span class="hljs-string">'HEX_FILE_PERM_CODE'</span>
+}
+</code></pre></div>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="error-handling">Error Handling</h3>
+<pre><code class="lang-js">.build(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> {</span>
+    <span class="hljs-keyword">if</span> (err) { <span class="hljs-keyword">throw</span> err; }
+});
+</code></pre>
+
+                </section>
+            
+                <section class="slide ">
+                    <pre><code class="lang-js"><span class="hljs-keyword">var</span> plugin = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(opts)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(files, metalsmith, done)</span> {</span>
+        done();      
+    };
+};
+</code></pre>
+
+                </section>
+            
+                <section class="slide ">
+                    <pre><code class="lang-js"><span class="hljs-keyword">var</span> autoTemplate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(opts)</span> {</span>
+    <span class="hljs-keyword">var</span> pattern = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(config.pattern);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(files, metalsmith, done)</span> {</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> file <span class="hljs-keyword">in</span> files) {
+            <span class="hljs-keyword">if</span> (pattern.test(file)) {
+                <span class="hljs-keyword">var</span> _f = files[file];
+                <span class="hljs-keyword">if</span> (!_f.template) {
+                    _f.template = config.templateName;
+                }
+            }
+        }
+        done();
+    };
+};
+</code></pre>
+<div class="fragment"><pre><code class="lang-js">    //<span class="hljs-keyword">...</span>
+    .use(autoTemplate({
+        pattern: <span class="hljs-string">'posts'</span>,
+        templateName: <span class="hljs-string">'post.hbt'</span>
+    }))
+    //<span class="hljs-keyword">...</span>
+</code></pre></div>
+
+                </section>
+            
+                <section class="slide ">
+                    <pre><code class="lang-js">var metadata    = metalsmith<span class="hljs-preprocessor">.metadata</span>(),
+    collections = metadata<span class="hljs-preprocessor">.collections</span><span class="hljs-comment">;</span>
+</code></pre>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="preprocessing">Preprocessing</h3>
+<pre><code>$ npm install <span class="hljs-attribute">-D</span> metalsmith<span class="hljs-attribute">-sass</span> metalsmith<span class="hljs-attribute">-coffee</span>
+</code></pre><pre><code class="lang-js">// <span class="hljs-keyword">...</span>
+    .use(sass({
+        outputStyle: <span class="hljs-string">'compressed'</span>
+    }))
+    .use(coffee())
+// <span class="hljs-keyword">...</span>
+</code></pre>
+<div class="fragment">All other static files (images, fonts, etc.) are jsut copied over (including folder structure)</div>
+
+                </section>
+            
+                <section class="slide tiny-code">
+                    <pre><code class="lang-js"><span class="hljs-keyword">var</span> clone = require(<span class="hljs-string">'clone'</span>);
+<span class="hljs-keyword">var</span> defaults = require(<span class="hljs-string">'defaults'</span>);
+<span class="hljs-keyword">var</span> each = require(<span class="hljs-string">'async'</span>).each;
+<span class="hljs-keyword">var</span> front = require(<span class="hljs-string">'front-matter'</span>);
+<span class="hljs-keyword">var</span> fs = require(<span class="hljs-string">'fs-extra'</span>);
+<span class="hljs-keyword">var</span> Mode = require(<span class="hljs-string">'stat-mode'</span>);
+<span class="hljs-keyword">var</span> noop = function(){};
+<span class="hljs-keyword">var</span> path = require(<span class="hljs-string">'path'</span>);
+<span class="hljs-keyword">var</span> readdir = require(<span class="hljs-string">'recursive-readdir'</span>);
+<span class="hljs-keyword">var</span> rm = require(<span class="hljs-string">'rimraf'</span>).sync;
+<span class="hljs-keyword">var</span> utf8 = require(<span class="hljs-string">'is-utf8'</span>);
+<span class="hljs-keyword">var</span> Ware = require(<span class="hljs-string">'ware'</span>);
+
+<span class="hljs-javadoc">/**
+ * Expose `Metalsmith`.
+ */</span>
+
+module.exports = Metalsmith;
+
+<span class="hljs-javadoc">/**
+ * Initialize a new `Metalsmith` builder with a working `dir`.
+ *
+ * <span class="hljs-javadoctag">@param</span> {String} dir
+ */</span>
+
+function Metalsmith(dir){
+  <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span> instanceof Metalsmith)) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Metalsmith(dir);
+  <span class="hljs-keyword">this</span>.dir = path.resolve(dir);
+  <span class="hljs-keyword">this</span>.ware = <span class="hljs-keyword">new</span> Ware();
+  <span class="hljs-keyword">this</span>.data = {};
+  <span class="hljs-keyword">this</span>.source(<span class="hljs-string">'src'</span>);
+  <span class="hljs-keyword">this</span>.destination(<span class="hljs-string">'build'</span>);
+  <span class="hljs-keyword">this</span>.clean(<span class="hljs-keyword">true</span>);
+}
+
+<span class="hljs-javadoc">/**
+ * Add a `plugin` to the middleware stack.
+ *
+ * <span class="hljs-javadoctag">@param</span> {Function} plugin
+ * <span class="hljs-javadoctag">@return</span> {Metalsmith}
+ */</span>
+
+Metalsmith.prototype.use = function(plugin){
+  <span class="hljs-keyword">this</span>.ware.use(plugin);
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};
+
+<span class="hljs-javadoc">/**
+ * Get or set the global `metadata` to pass to templates.
+ *
+ * <span class="hljs-javadoctag">@param</span> {Object} metadata
+ * <span class="hljs-javadoctag">@return</span> {Object or Metalsmith}
+ */</span>
+
+Metalsmith.prototype.metadata = function(metadata){
+  <span class="hljs-keyword">if</span> (!arguments.length) <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.data;
+  <span class="hljs-keyword">this</span>.data = clone(metadata);
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};
+
+<span class="hljs-javadoc">/**
+ * Get or set the source directory.
+ *
+ * <span class="hljs-javadoctag">@param</span> {String} path
+ * <span class="hljs-javadoctag">@return</span> {String or Metalsmith}
+ */</span>
+
+Metalsmith.prototype.source = function(path){
+  <span class="hljs-keyword">if</span> (!arguments.length) <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.join(<span class="hljs-keyword">this</span>._src);
+  <span class="hljs-keyword">this</span>._src = path;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};
+
+<span class="hljs-javadoc">/**
+ * Get or set the destination directory.
+ *
+ * <span class="hljs-javadoctag">@param</span> {String} path
+ * <span class="hljs-javadoctag">@return</span> {String or Metalsmith}
+ */</span>
+
+Metalsmith.prototype.destination = function(path){
+  <span class="hljs-keyword">if</span> (!arguments.length) <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.join(<span class="hljs-keyword">this</span>._dest);
+  <span class="hljs-keyword">this</span>._dest = path;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};
+
+<span class="hljs-javadoc">/**
+ * Get or set whether the destination directory will be removed before writing.
+ * <span class="hljs-javadoctag">@param</span>  {Boolean} clean
+ * <span class="hljs-javadoctag">@return</span> {Boolean or Metalsmith}
+ */</span>
+Metalsmith.prototype.clean = function(clean){
+  <span class="hljs-keyword">if</span> (!arguments.length) <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._clean;
+  <span class="hljs-keyword">this</span>._clean = clean;
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+};
+
+<span class="hljs-javadoc">/**
+ * Join path `strs` with the working directory.
+ *
+ * <span class="hljs-javadoctag">@param</span> {String} strs...
+ * <span class="hljs-javadoctag">@return</span> {String}
+ */</span>
+
+Metalsmith.prototype.join = function(){
+  <span class="hljs-keyword">var</span> strs = [].slice.call(arguments);
+  strs.unshift(<span class="hljs-keyword">this</span>.dir);
+  <span class="hljs-keyword">return</span> path.join.apply(path, strs);
+};
+
+<span class="hljs-javadoc">/**
+ * Build with the current settings to the dest directory.
+ *
+ * <span class="hljs-javadoctag">@param</span> {Function} fn
+ */</span>
+
+Metalsmith.prototype.build = function(fn){
+  fn = fn || noop;
+  <span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+
+  <span class="hljs-keyword">this</span>.read(function(err, files){
+    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> fn(err);
+    self.run(files, function(err, files){
+      <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> fn(err);
+      self.write(files, function(err){
+        fn(err, files);
+      });
+    });
+  });
+};
+
+<span class="hljs-javadoc">/**
+ * Run a set of `files` through the middleware stack.
+ *
+ * <span class="hljs-javadoctag">@param</span> {Object} files
+ * <span class="hljs-javadoctag">@param</span> {Function} fn
+ */</span>
+
+Metalsmith.prototype.run = function(files, fn){
+  <span class="hljs-keyword">this</span>.ware.run(files, <span class="hljs-keyword">this</span>, fn);
+};
+
+<span class="hljs-javadoc">/**
+ * Read the source directory, parsing front matter and call `fn(files)`.
+ *
+ * <span class="hljs-javadoctag">@param</span> {Function} fn
+ * <span class="hljs-javadoctag">@api</span> private
+ */</span>
+
+Metalsmith.prototype.read = function(fn){
+  <span class="hljs-keyword">var</span> files = {};
+  <span class="hljs-keyword">var</span> src = <span class="hljs-keyword">this</span>.source();
+
+  readdir(src, function(err, arr){
+    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> fn(err);
+    each(arr, read, function(err){
+      fn(err, files);
+    });
+  });
+
+  function read(file, done){
+    <span class="hljs-keyword">var</span> name = path.relative(src, file);
+    fs.stat(file, function(err, stats){
+      <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> done(err);
+      fs.readFile(file, function(err, buffer){
+        <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> done(err);
+        <span class="hljs-keyword">var</span> file = {};
+
+        <span class="hljs-keyword">if</span> (utf8(buffer)) {
+          <span class="hljs-keyword">var</span> parsed = front(buffer.toString());
+          file = parsed.attributes;
+          file.contents = <span class="hljs-keyword">new</span> Buffer(parsed.body);
+        } <span class="hljs-keyword">else</span> {
+          file.contents = buffer;
+        }
+
+        file.mode = Mode(stats).toOctal();
+        files[name] = file;
+        done();
+      });
+    });
+  }
+};
+
+<span class="hljs-javadoc">/**
+ * Write a dictionary of `files` to the dest directory.
+ *
+ * <span class="hljs-javadoctag">@param</span> {Object} files
+ * <span class="hljs-javadoctag">@param</span> {Function} fn
+ * <span class="hljs-javadoctag">@api</span> private
+ */</span>
+
+Metalsmith.prototype.write = function(files, fn){
+  <span class="hljs-keyword">var</span> dest = <span class="hljs-keyword">this</span>.destination();
+  <span class="hljs-keyword">var</span> clean = <span class="hljs-keyword">this</span>.clean();
+
+  <span class="hljs-keyword">if</span> (clean) rm(dest);
+  each(Object.keys(files), write, fn);
+
+  function write(file, done){
+    <span class="hljs-keyword">var</span> data = files[file];
+    <span class="hljs-keyword">var</span> out = path.join(dest, file);
+    <span class="hljs-keyword">return</span> fs.outputFile(out, data.contents, function(err){
+      <span class="hljs-keyword">if</span> (err) done(err);
+      <span class="hljs-keyword">if</span> (!data.mode) <span class="hljs-keyword">return</span> done();
+      fs.chmod(out, data.mode, done);
+    });
+  }
+};
+</code></pre>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="-metalsmith-io-http-metalsmith-io-"><a href="http://metalsmith.io">Metalsmith.io</a></h3>
+
+                </section>
+            
+                <section class="slide ">
+                    <h3 id="-build-"><code>.build()</code></h3>
+<h2 id="thanks-">Thanks!</h2>
+<div class="fragment"><h4 id="questions-">Questions?</h4></div>
+<div class="author-info">
+    <h5>Source Code</h5>
+    <a href="https://github.com/RobinThrift/metalsmith-presentation-slides">Slides</a>
+    <a href="https://github.com/RobinThrift/metalsmith-presentation-code">Site</a>
+</div>
+                </section>
+                 
+        </div>        
+    </div>
+
+    <script src="scripts/reveal.min.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>
