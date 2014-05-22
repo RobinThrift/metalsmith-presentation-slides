@@ -187,7 +187,7 @@ Awesome, witty content here!
         blog: {
             pattern: <span class="hljs-string">'*/posts/*'</span>,
             oderBy: <span class="hljs-string">'date'</span>,
-            revers: true
+            reverse: true
         },
         pages: {
             pattern: <span class="hljs-string">'*/pages/*'</span>
@@ -220,8 +220,7 @@ Awesome, witty content here!
 </code></pre><div class="fragment"><code>build.js</code></p>
 <pre><code class="lang-js">    // <span class="hljs-keyword">...</span>
     .use(permalinks({
-        pattern: <span class="hljs-string">':collection/:title'</span>,
-        relative: true
+        pattern: <span class="hljs-string">':collection/:title'</span>
     }))
     // <span class="hljs-keyword">...</span>
 </code></pre></div>
@@ -240,10 +239,12 @@ Awesome, witty content here!
                     <h3 id="writing-plugins">Writing Plugins</h3>
 <div class="fragment"><h4 id="internal-structure">Internal Structure</h4>
 <pre><code class="lang-js">{
-    <span class="hljs-string">'title'</span>: <span class="hljs-string">'FROM_THE_TITLE_KEY'</span>,
-    <span class="hljs-string">'template'</span>: <span class="hljs-string">'TEMPLATE_NAME'</span>,
-    <span class="hljs-string">'contents'</span>: &lt;Buffer()&gt;,
-    <span class="hljs-string">'mode'</span>: <span class="hljs-string">'HEX_FILE_PERM_CODE'</span>
+    <span class="hljs-string">'path/to/file'</span>: {
+        <span class="hljs-string">'title'</span>: <span class="hljs-string">'FROM_THE_TITLE_KEY'</span>,
+        <span class="hljs-string">'template'</span>: <span class="hljs-string">'TEMPLATE_NAME'</span>,
+        <span class="hljs-string">'contents'</span>: &lt;Buffer()&gt;,
+        <span class="hljs-string">'mode'</span>: <span class="hljs-string">'HEX_FILE_PERM_CODE'</span>
+    }
 }
 </code></pre></div>
 
@@ -270,14 +271,14 @@ Awesome, witty content here!
             
                 <section class="slide ">
                     <pre><code class="lang-js"><span class="hljs-keyword">var</span> autoTemplate = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(opts)</span> {</span>
-    <span class="hljs-keyword">var</span> pattern = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(config.pattern);
+    <span class="hljs-keyword">var</span> pattern = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(opts.pattern);
 
     <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(files, metalsmith, done)</span> {</span>
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> file <span class="hljs-keyword">in</span> files) {
             <span class="hljs-keyword">if</span> (pattern.test(file)) {
                 <span class="hljs-keyword">var</span> _f = files[file];
                 <span class="hljs-keyword">if</span> (!_f.template) {
-                    _f.template = config.templateName;
+                    _f.template = opts.templateName;
                 }
             }
         }
@@ -313,6 +314,63 @@ Awesome, witty content here!
 // <span class="hljs-keyword">...</span>
 </code></pre>
 <div class="fragment">All other static files (images, fonts, etc.) are just copied over (including folder structure)</div>
+
+                </section>
+            
+                <section class="slide ">
+                    <pre><code class="lang-js">Metalsmith(__dirname)
+    .<span class="hljs-keyword">use</span>(collections({
+        blog: {
+            pattern: <span class="hljs-string">'*/posts/*'</span>,
+            oderBy: <span class="hljs-string">'date'</span>,
+            revers: <span class="hljs-keyword">true</span>
+        },
+        pages: {
+            pattern: <span class="hljs-string">'*/pages/*'</span>
+        }
+    }))
+    .<span class="hljs-keyword">use</span>(markdown())
+    .<span class="hljs-keyword">use</span>(autoTemplate({
+        pattern: <span class="hljs-string">'posts/'</span>,
+        templateName: <span class="hljs-string">'post.hbt'</span>
+    }))
+    .<span class="hljs-keyword">use</span>(permalinks({
+        pattern: <span class="hljs-string">':collection/:title'</span>
+    }))
+    .<span class="hljs-keyword">use</span>(templates(<span class="hljs-string">'handlebars'</span>))
+    .destination(<span class="hljs-string">'./build'</span>)
+    .build(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(err)</span> {</span>
+        <span class="hljs-keyword">if</span> (err) { <span class="hljs-keyword">throw</span> err; }
+    });
+</code></pre>
+
+                </section>
+            
+                <section class="slide ">
+                    <pre><code class="lang-json">{
+    "<span class="hljs-attribute">source</span>": <span class="hljs-value"><span class="hljs-string">"src"</span></span>,
+    "<span class="hljs-attribute">destination</span>": <span class="hljs-value"><span class="hljs-string">"build"</span></span>,
+    "<span class="hljs-attribute">plugins</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">metalsmith-collections</span>": <span class="hljs-value">{
+            "<span class="hljs-attribute">blog</span>": <span class="hljs-value">{
+                "<span class="hljs-attribute">pattern</span>": <span class="hljs-value"><span class="hljs-string">"*/posts/*"</span></span>,
+                "<span class="hljs-attribute">oderBy</span>": <span class="hljs-value"><span class="hljs-string">"date"</span></span>,
+                "<span class="hljs-attribute">revers</span>": <span class="hljs-value"><span class="hljs-literal">true</span>
+            </span>}</span>,
+            "<span class="hljs-attribute">pages</span>": <span class="hljs-value">{
+                "<span class="hljs-attribute">pattern</span>": <span class="hljs-value"><span class="hljs-string">"*/pages/*"</span>
+            </span>}
+        </span>}</span>,
+        "<span class="hljs-attribute">metalsmith-markdown</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+        "<span class="hljs-attribute">metalsmith-autoTemplate</span>": <span class="hljs-value">{
+            "<span class="hljs-attribute">pattern</span>": <span class="hljs-value"><span class="hljs-string">"posts/"</span></span>,
+            "<span class="hljs-attribute">templateName</span>": <span class="hljs-value"><span class="hljs-string">"post.hbt"</span>
+        </span>}</span>,
+        "<span class="hljs-attribute">metalsmith-permalinks</span>": <span class="hljs-value"><span class="hljs-string">":collection/:title"</span></span>,
+        "<span class="hljs-attribute">metalsmith-templates</span>": <span class="hljs-value"><span class="hljs-string">"handlebars"</span>
+    </span>}
+</span>}
+</code></pre>
 
                 </section>
             
