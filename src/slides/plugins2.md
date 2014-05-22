@@ -9,10 +9,12 @@ num: 140
 ####Internal Structure
 ```js
 {
-    'title': 'FROM_THE_TITLE_KEY',
-    'template': 'TEMPLATE_NAME',
-    'contents': <Buffer()>,
-    'mode': 'HEX_FILE_PERM_CODE'
+    'path/to/file': {
+        'title': 'FROM_THE_TITLE_KEY',
+        'template': 'TEMPLATE_NAME',
+        'contents': <Buffer()>,
+        'mode': 'HEX_FILE_PERM_CODE'
+    }
 }
 ```
 [/fragment]

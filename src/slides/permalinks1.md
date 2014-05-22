@@ -14,8 +14,7 @@ $ npm install -D metalsmith-permalinks
 ```js
     // ...
     .use(permalinks({
-        pattern: ':collection/:title',
-        relative: true
+        pattern: ':collection/:title'
     }))
     // ...
 ```

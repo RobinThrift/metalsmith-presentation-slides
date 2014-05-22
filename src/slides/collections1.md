@@ -17,7 +17,7 @@ $ npm install -D metalsmith-collections
         blog: {
             pattern: '*/posts/*',
             oderBy: 'date',
-            revers: true
+            reverse: true
         },
         pages: {
             pattern: '*/pages/*'
